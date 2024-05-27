@@ -7,13 +7,24 @@ This project built on top of [pyBusPirateLite](https://github.com/juhasch/pyBusP
 
 ## Installation
 
-From the root of the cloned repo you can install `bphelpers` running :
+From the root of the cloned repo you can install `bphelpers` running:
 
 ```bash
 # from the root of the cloned repo
 virtualenv venv
 source venv/bin/activate
+
 pip install .
+```
+
+Directly From GitHub Releases:
+
+```bash
+# from anywhere
+virtualenv venv
+source venv/bin/activate
+
+pip install --upgrade https://github.com/julianvilas/bphelpers/releases/download/v0.0.0/bphelpers-0.0.0-py3-none-any.whl
 ```
 
 ## Usage
