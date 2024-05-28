@@ -62,7 +62,7 @@ class AT24CXXX(I2C):
 
         Examples
         --------
-        >>> at24c.configure(power=True)
+        >>> at24c.configure(power=True, pullup=True) # do not enable pullup when using external pullup resistors
         >>> at24c.store(0x0000, b'\x00Hello, world!\xff')
         """
 
@@ -94,7 +94,7 @@ class AT24CXXX(I2C):
 
         Examples
         --------
-        >>> at24c.configure(power=True)
+        >>> at24c.configure(power=True, pullup=True) # do not enable pullup when using external pullup resistors
         >>> at24c.load(0x0000, 15)
         """
 

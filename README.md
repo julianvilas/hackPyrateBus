@@ -47,7 +47,7 @@ Device particularities:
 from bphelpers.AT24CXXX import AT24CXXX
 at24c = AT24CXXX()
 at24c.speed = '50kHz'
-at24c.configure(power=True)
+at24c.configure(power=True, pullup=True) # do not enable pullup when using external pullup resistors
 ```
 
 Default values:
