@@ -1,6 +1,6 @@
 # bphelpers
 
-`bphelpers` is a Python library and command-line interface (CLI) that provides high-level functions to interact with specific integrated circuits using the Bus Pirate.
+`bphelpers` is a Python library and command-line interface (CLI) that provides high-level functions to interact with specific integrated circuits using the [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate).
 This library takes into account the particularities of the integrated circuits it interacts with.
 
 This project built on top of [pyBusPirateLite](https://github.com/juhasch/pyBusPirateLite), and we would like to give credit to the original authors and contributors of pyBusPirateLite and pyBusPirate.
@@ -24,7 +24,9 @@ Directly From GitHub Releases:
 virtualenv venv
 source venv/bin/activate
 
-pip install --upgrade https://github.com/julianvilas/bphelpers/releases/download/v0.0.1/bphelpers-0.0.1-py3-none-any.whl
+# latest release
+url=$(curl --silent "https://api.github.com/repos/julianvilas/bphelpers/releases/latest" | jq -r .assets[0].browser_download_url)
+pip install --upgrade $url
 ```
 
 ## Usage
