@@ -24,7 +24,7 @@ Directly From GitHub Releases:
 virtualenv venv
 source venv/bin/activate
 
-pip install --upgrade https://github.com/julianvilas/bphelpers/releases/download/v0.0.0/bphelpers-0.0.0-py3-none-any.whl
+pip install --upgrade https://github.com/julianvilas/bphelpers/releases/download/v0.0.1/bphelpers-0.0.1-py3-none-any.whl
 ```
 
 ## Usage
