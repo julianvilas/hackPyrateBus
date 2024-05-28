@@ -3,9 +3,11 @@ from pyBusPirateLite.I2C import I2C
 class AT24CXXX(I2C):
     """ Adapted I2C methods for AT24128/256 EEPROMs """
 
-    PAGE_SIZE = 64
-    MAX_WORDS_128 = 16384
-    MAX_WORDS_256 = 32768
+    PAGE_SIZE = 64 # page size in bytes
+    MAX_WORDS = {
+        128: 16384,
+        256: 32768,
+    } # max number of words in EEPROM
 
     def __init__(self, portname='', speed=115200, timeout=1.0, connect=True, size=256, device_address=0x50):
         """
@@ -64,12 +66,8 @@ class AT24CXXX(I2C):
         >>> at24c.store(0x0000, b'\x00Hello, world!\xff')
         """
 
-        if self.size == 128:
-            if addr > self.MAX_WORDS_128 or len(data) > self.MAX_WORDS_128:
-                raise ValueError("Out of range for 128 kbit EEPROM")
-        elif self.size == 256:
-            if addr > self.MAX_WORDS_256 or len(data) > self.MAX_WORDS_256:
-                raise ValueError("Out of range for 256 kbit EEPROM")
+        if addr + len(data) > self.MAX_WORDS[self.size]:
+            raise ValueError("Out of range for EEPROM")
 
         # split the data into PAGE_SIZE byte chunks otherwise the same page is overwritten over and over
         # check the datasheet for the page size 'WRITE OPERATIONS - PAGE WRITE' section
@@ -100,12 +98,8 @@ class AT24CXXX(I2C):
         >>> at24c.load(0x0000, 15)
         """
 
-        if self.size == 128:
-            if addr > self.MAX_WORDS_128 or amount > self.MAX_WORDS_128:
-                raise ValueError("Out of range for 128 kbit EEPROM")
-        elif self.size == 256:
-            if addr > self.MAX_WORDS_256 or amount > self.MAX_WORDS_256:
-                raise ValueError("Out of range for 256 kbit EEPROM")
+        if addr + amount > self.MAX_WORDS[self.size]:
+            raise ValueError("Out of range for EEPROM")
 
         # dummy write to set the address pointer
         header = [self.device_address] + list(addr.to_bytes(2, 'big'))
