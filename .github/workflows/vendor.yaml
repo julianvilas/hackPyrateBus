@@ -1,0 +1,36 @@
+name: Vendor pyBusPirateLite forked repository
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Vendor pyBusPirateLite forked repository and copy module
+      run: |
+        BRANCH_NAME=test
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        git checkout -b "$BRANCH_NAME"
+        git clone --branch new --depth 1 https://github.com/julianvilas/pyBusPirateLite.git
+        echo "COMMIT_ID=$(git -C pyBusPirateLite rev-parse --short HEAD)" >> $GITHUB_ENV
+        cp -r pyBsusPirateLite/pyBusPirateLite vendor/
+        rm -r pyBusPirateLite
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Action"
+
+        git add vendor/
+        if git diff-index --quiet HEAD --; then
+          echo "No changes to commit"
+          exit 0
+
+        git commit -m "vendor: pyBusPirateLite (commit: $COMMIT_ID)"
+        git push origin "$BRANCH_NAME"

@@ -14,31 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Vendor pyBusPirateLite forked repository and copy module
-      run: |
-        BRANCH_NAME=$(git branch -r --contains ${{ github.ref }} | sed 's#origin/##' | sed 's/^[ \t]*//;s/[ \t]*$//' | head -n 1)
-        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-        git checkout "$BRANCH_NAME"
-        git clone --branch new --depth 1 https://github.com/julianvilas/pyBusPirateLite.git
-        echo "COMMIT_ID=$(git -C pyBusPirateLite rev-parse --short HEAD)" >> $GITHUB_ENV
-        cp -r pyBusPirateLite/pyBusPirateLite vendor/
-        rm -r pyBusPirateLite
-
-    - name: Commit and push changes
-      run: |
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Action"
-        git add vendor/
-        if git diff-index --quiet HEAD --; then
-          echo "No changes to commit"
-        else
-          TAG_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
-          git commit -m "vendor: pyBusPirateLite (commit: $COMMIT_ID)" -m "Vendoring triggered by tag $TAG_NAME"
-          git push origin "$BRANCH_NAME"
-        fi
 
     - name: Set up Python
       uses: actions/setup-python@v5
