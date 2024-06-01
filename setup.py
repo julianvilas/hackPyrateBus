@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
     name = "hackPyrateBus",
-    version = "0.0.1",
+    version = "0.0.5",
     python_requires='>=3.11',
     description = ("Python library with high-level functions to interact with specific ICs using Bus Pirate"),
     license = "GPLv3",
