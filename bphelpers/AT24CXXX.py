@@ -1,4 +1,4 @@
-from pyBusPirateLite.I2C import I2C
+from vendor.pyBusPirateLite.I2C import I2C
 
 class AT24CXXX(I2C):
     """ Adapted I2C methods for AT24128/256 EEPROMs """
