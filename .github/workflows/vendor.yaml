@@ -47,3 +47,7 @@ jobs:
           --body "This PR vendors pyBusPirateLite (commit: $COMMIT_ID)" \
           --base main \
           --head "$BRANCH_NAME"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMIT_ID: ${{ env.COMMIT_ID }}
+        BRANCH_NAME: ${{ env.BRANCH_NAME }}
