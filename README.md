@@ -1,6 +1,6 @@
-# bphelpers
+# hackPyrateBus
 
-`bphelpers` is a Python library that provides high-level functions to interact with specific integrated circuits using the [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate).
+`hackPyrateBus` is a Python library that provides high-level functions to interact with specific integrated circuits using the [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate).
 This library takes into account the particularities of the integrated circuits it interacts with.
 
 This project is built on top of [pyBusPirateLite](https://github.com/juhasch/pyBusPirateLite), and we would like to give credit to the original authors and contributors of pyBusPirateLite and pyBusPirate.
@@ -10,7 +10,7 @@ _The `new` branch in that fork contains commits not available in the original up
 
 ## Installation
 
-From the root of the cloned repo you can install `bphelpers` running:
+From the root of the cloned repo you can install `hackPyrateBus` running:
 
 ```bash
 # from the root of the cloned repo
@@ -28,7 +28,7 @@ virtualenv venv
 source venv/bin/activate
 
 # latest release
-url=$(curl --silent "https://api.github.com/repos/julianvilas/bphelpers/releases/latest" | jq -r .assets[0].browser_download_url)
+url=$(curl --silent "https://api.github.com/repos/julianvilas/hackPyrateBus/releases/latest" | jq -r .assets[0].browser_download_url)
 pip install --upgrade $url
 ```
 
@@ -49,7 +49,7 @@ Device particularities:
 #### Initialize with default values
 
 ```python
-from bphelpers.AT24CXXX import AT24CXXX
+from hackPyrateBus.AT24CXXX import AT24CXXX
 at24c = AT24CXXX()
 at24c.speed = '50kHz'
 at24c.configure(power=True, pullup=True) # do not enable pullup when using external pullup resistors
@@ -94,6 +94,6 @@ This project uses the following open source packages:
 
 ## License
 
-`bphelpers` is licensed under the GNU General Public License v3 (GPLv3). The full text of the license can be found in the [LICENSE](LICENSE) file.
+`hackPyrateBus` is licensed under the GNU General Public License v3 (GPLv3). The full text of the license can be found in the [LICENSE](LICENSE) file.
 
 The pyBusPirateLite project, from which this project is derived, is also licensed under the GPLv3. We would like to thank the authors and contributors of pyBusPirateLite for their work.

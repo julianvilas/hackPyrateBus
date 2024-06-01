@@ -6,13 +6,13 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = "bphelpers",
+    name = "hackPyrateBus",
     version = "0.0.1",
     python_requires='>=3.11',
     description = ("Python library with high-level functions to interact with specific ICs using Bus Pirate"),
     license = "GPLv3",
     keywords = "BusPirate",
-    url = "https://github.com/julianvilas/bphelpers",
+    url = "https://github.com/julianvilas/hackPyrateBus",
     # NOTE: the pyBusPirateLite dependency is vendored from
     # https://github.com/julianvilas/pyBusPirateLite/tree/new for convenience,
     # as the project does not seem to be maintained and it is not available in

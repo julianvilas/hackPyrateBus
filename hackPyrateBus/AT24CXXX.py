@@ -31,7 +31,7 @@ class AT24CXXX(I2C):
 
         Examples
         --------
-        >>> from pyBusPirateLite.AT24CXXX import AT24CXXX
+        >>> from hackPyrateBus.AT24CXXX import AT24CXXX
         >>> at24c = AT24CXXX()
         >>> at24c.speed = '50kHz'
         """
