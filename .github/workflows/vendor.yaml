@@ -2,6 +2,9 @@ name: Vendor pyBusPirateLite forked repository
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - vendor-buspiratelite
 
 jobs:
   vendor:
