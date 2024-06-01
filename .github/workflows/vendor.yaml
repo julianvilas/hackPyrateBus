@@ -22,9 +22,7 @@ jobs:
         git checkout -b "$BRANCH_NAME"
         git clone --branch new --depth 1 https://github.com/julianvilas/pyBusPirateLite.git
         echo "COMMIT_ID=$(git -C pyBusPirateLite rev-parse --short HEAD)" >> $GITHUB_ENV
-        pwd
-        ls -la
-        cp -r pyBsusPirateLite/pyBusPirateLite vendor/
+        cp -r pyBusPirateLite/pyBusPirateLite vendor/
         rm -r pyBusPirateLite
 
     - name: Commit and push changes
