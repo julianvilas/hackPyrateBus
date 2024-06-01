@@ -1,0 +1,51 @@
+name: Vendor pyBusPirateLite forked repository
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Vendor pyBusPirateLite forked repository and copy module
+      run: |
+        git clone --branch new --depth 1 https://github.com/julianvilas/pyBusPirateLite.git
+        COMMIT_ID=$(git -C pyBusPirateLite rev-parse --short HEAD)
+        echo "COMMIT_ID=$COMMIT_ID" >> $GITHUB_ENV
+        BRANCH_NAME="vendor-pyBusPirateLite-$COMMIT_ID"
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        git checkout -b "$BRANCH_NAME"
+        cp -r pyBusPirateLite/pyBusPirateLite vendor/
+        rm -rf pyBusPirateLite
+
+    - name: Commit, push changes and open a pull request
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Action"
+
+        git add vendor/
+        if git diff-index --quiet HEAD --; then
+          echo "No changes to commit"
+          exit 0
+        fi
+
+        git commit -m "vendor: pyBusPirateLite (commit: $COMMIT_ID)"
+        git push origin "$BRANCH_NAME"
+        gh pr create \
+          --title "Vendor pyBusPirateLite (commit: $COMMIT_ID)" \
+          --body "This PR vendors pyBusPirateLite (commit: $COMMIT_ID)" \
+          --base main \
+          --head "$BRANCH_NAME"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMIT_ID: ${{ env.COMMIT_ID }}
+        BRANCH_NAME: ${{ env.BRANCH_NAME }}
