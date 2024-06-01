@@ -4,9 +4,21 @@ permissions:
   contents: write
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version in SemVer format'
+        type: string
+        required: true
+      description:
+        description: 'Description of the release'
+        type: string
+        required: true
+      latest:
+        description: 'Is this the latest release?'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build-and-publish:
@@ -14,6 +26,30 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Increase version
+      run: |
+        VERSION=${VERSION#v}
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        sed -i "s/__version__ = .*/__version__ = '${VERSION}'/" hackPyrateBus/__init__.py
+        sed -i "s/version = .*/version = '${VERSION}',/" setup.py
+      env:
+        VERSION: ${{ inputs.version }}
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Action"
+
+        git add setup.py hackPyrateBus/__init__.py
+        if git diff-index --quiet HEAD --; then
+          echo "No changes to commit"
+        else
+          git commit -m "all: bump version to $VERSION"
+          git push origin HEAD
+        fi
+      env:
+        VERSION: ${{ env.VERSION }}
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -35,16 +71,25 @@ jobs:
           const fs = require('fs');
           const path = require('path');
 
-          const tag = process.env.GITHUB_REF;
+          const tag = context.payload.inputs.version;
           const repo = process.env.GITHUB_REPOSITORY;
           const [owner, repoName] = repo.split('/');
 
-          const releaseResponse = await github.rest.repos.createRelease({
+          // Get the current branch name
+          const branch = process.env.GITHUB_REF.replace('refs/heads/', '');
+
+          payload = {
             owner: owner,
             repo: repoName,
             tag_name: tag,
-            name: `Release ${tag.replace('refs/tags/', '')}`,
-          });
+            name: `Release ${tag}`,
+            target_commitish: branch,
+            generate_release_notes: true,
+            make_latest: context.payload.inputs.latest,
+          };
+          console.log(payload);
+
+          const releaseResponse = await github.rest.repos.createRelease(payload);
 
           const { id: id } = releaseResponse.data;
 

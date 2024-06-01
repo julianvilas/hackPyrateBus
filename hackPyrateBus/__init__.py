@@ -1,3 +1,3 @@
 from .AT24CXXX import *
 
-__version__ = '0.0.5'
+__version__ = '0.0.6-alpha.1'
