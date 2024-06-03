@@ -10,6 +10,15 @@ _The `new` branch in that fork contains commits not available in the original up
 
 ## Installation
 
+From PyPI:
+
+```bash
+virtualenv venv
+source venv/bin/activate
+
+pip install hackPyrateBus
+```
+
 From the root of the cloned repo you can install `hackPyrateBus` running:
 
 ```bash
