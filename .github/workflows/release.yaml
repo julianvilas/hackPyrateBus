@@ -2,6 +2,7 @@ name: Build and Create Release
 
 permissions:
   contents: write
+  id-token: write
 
 on:
   workflow_dispatch:
@@ -10,12 +11,18 @@ on:
         description: 'Version in SemVer format'
         type: string
         required: true
-      description:
-        description: 'Description of the release'
-        type: string
-        required: true
       latest:
         description: 'Is this the latest release?'
+        required: false
+        type: boolean
+        default: true
+      publishTestPyPI:
+        description: 'Publish to TestPyPI?'
+        required: false
+        type: boolean
+        default: false
+      publishPyPI:
+        description: 'Publish to PyPI?'
         required: false
         type: boolean
         default: true
@@ -106,3 +113,14 @@ jobs:
               data: content,
             });
           }
+
+    - name: Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+      if: github.event.inputs.publishTestPyPI == 'true'
+
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      if: github.event.inputs.publishPyPI == 'true' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')
