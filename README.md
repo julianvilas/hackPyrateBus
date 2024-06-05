@@ -7,6 +7,7 @@ This project is built on top of [pyBusPirateLite](https://github.com/juhasch/pyB
 
 _NOTE: the pyBusPirateLite dependency is vendored from https://github.com/julianvilas/pyBusPirateLite/tree/new for convenience, as the original project does not seem to be maintained and it is not available in PyPI neither._
 _The `new` branch in that fork contains commits not available in the original upstream, while `master` matches exactly the upstream (as of today)._
+_[How to use the module directly](#pybuspiratelite-users)._
 
 ## Installation
 
@@ -93,6 +94,16 @@ at24c.store(100, b'\x00Hello, world!\xff')
 
 ```python
 at24c.hw_reset()
+```
+
+### pyBusPirateLite users
+
+As previously mentioned `pyBusPirateLite` is vendored in this repo. To directly use that module, just import `vendor.pyBusPirateLite`.
+
+Usage example:
+
+```python
+from vendor.pyBusPirateLite.I2C import I2C
 ```
 
 ## Dependencies
