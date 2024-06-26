@@ -215,6 +215,46 @@ class SPI(BusPirate):
         rxdata = self.response(length, binary=True)
         return rxdata
 
+    # method added by julianvilas
+    def write_then_read_no_iosuccess(self, numtx, numrx, txdata, cs=True):
+        """ Write then read no iosuccess
+
+        Implementation of the write_then_read taking into account that the Bus
+        Pirate firmware does not return a success byte when we do not read any
+        data, even though it is documented to do so.
+
+        Parameters
+        ----------
+        numtx : int
+            Number of bytes to write
+        numrx : int
+            Number of bytes to read
+        txdata : list
+            Data to send
+        cs : bool
+            Generate CS transitions (default=True)
+
+        Raises
+        ------
+        ProtocolError
+            If data could not be sent
+        """
+
+        if cs:
+            self.write(0x04)
+        else:
+            self.write(0x05)
+        self.write(numtx >> 8 & 0xff)
+        self.write(numtx & 0xff)
+        self.write(numrx >> 8 & 0xff)
+        self.write(numrx & 0xff)
+        for data in txdata:
+            self.write(data)
+        if numrx > 0 and self.response(1, binary=True) != b'\x01':
+            raise ProtocolError("Error transmitting data")
+
+        return self.response(numrx, binary=True)
+
     def write_then_read(self, numtx, numrx, txdata, cs=True):
         """ Write then read
 
