@@ -131,7 +131,7 @@ Default values:
 * 0.5 timeout to ensure full memory can be read/written in a single call
 * The Bus Pirate is using the [buzzpirat](https://buzzpirat.com/) compatible firmware. Otherwise set this param as `False`.
 
-### Get memory info
+#### Get memory info
 
 ```python
 winbond.info()
